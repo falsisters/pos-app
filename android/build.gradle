@@ -3,6 +3,18 @@ allprojects {
         google()
         mavenCentral()
     }
+    
+}
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'  // or newer
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"  // or newer
+    }
 }
 
 rootProject.buildDir = "../build"
