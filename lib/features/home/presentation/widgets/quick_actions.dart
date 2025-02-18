@@ -1,4 +1,5 @@
 import 'package:falsisters_pos_app/features/home/presentation/widgets/quick_action_card.dart';
+import 'package:falsisters_pos_app/features/sales/presentation/screens/sales_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/permissions.dart';
 import '../../../../core/models/cashier.dart';
@@ -40,6 +41,20 @@ class QuickActions extends StatelessWidget {
 
   List<Widget> _buildQuickActionCards(BuildContext context) {
     final List<Widget> cards = [];
+
+    cards.add(
+      QuickActionCard(
+        title: 'POS',
+        icon: Icons.point_of_sale,
+        color: Colors.green,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SalesScreen()),
+          );
+        },
+      ),
+    );
 
     if (cashier.permissions.contains(CashierPermissions.PRICES)) {
       cards.add(
