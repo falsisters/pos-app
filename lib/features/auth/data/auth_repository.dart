@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:falsisters_pos_app/core/constants/api_constants.dart';
 import 'package:falsisters_pos_app/core/models/cashier.dart';
+import 'package:falsisters_pos_app/core/services/dio_client.dart';
 
 class AuthRepository {
   final Dio _dio;
 
-  AuthRepository(this._dio);
+  AuthRepository(DioClient dioClient) : _dio = dioClient.dio;
 
   Future<String> login(String name, String password) async {
     try {

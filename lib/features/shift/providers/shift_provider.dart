@@ -1,13 +1,14 @@
 // lib/features/shift/providers/shift_provider.dart
 import 'package:falsisters_pos_app/core/models/cashier.dart';
+import 'package:falsisters_pos_app/core/providers/dio_provider.dart';
 import 'package:falsisters_pos_app/features/shift/data/repositories/shift_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/providers/auth_provider.dart';
 import 'package:falsisters_pos_app/core/models/shift.dart';
 
 final shiftRepositoryProvider = Provider((ref) {
-  final dio = ref.watch(dioProvider);
-  return ShiftRepository(dio);
+  final dioClient = ref.watch(dioClientProvider);
+  return ShiftRepository(dioClient);
 });
 
 final shiftsProvider =

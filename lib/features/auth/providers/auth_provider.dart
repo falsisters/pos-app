@@ -1,13 +1,13 @@
 import 'package:falsisters_pos_app/core/models/cashier.dart';
-import 'package:falsisters_pos_app/core/services/dio_client.dart';
+import 'package:falsisters_pos_app/core/providers/dio_provider.dart';
 import 'package:falsisters_pos_app/core/services/secure_storage.dart';
 import 'package:falsisters_pos_app/features/auth/data/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final dioProvider = Provider((ref) => DioClient().dio);
-
-final authRepositoryProvider =
-    Provider((ref) => AuthRepository(ref.watch(dioProvider)));
+final authRepositoryProvider = Provider((ref) {
+  final dioClient = ref.watch(dioClientProvider);
+  return AuthRepository(dioClient);
+});
 
 final authStateProvider =
     StateNotifierProvider<AuthNotifier, AsyncValue<Cashier?>>((ref) {

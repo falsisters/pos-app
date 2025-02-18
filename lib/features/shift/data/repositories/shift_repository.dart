@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:falsisters_pos_app/core/models/shift.dart';
+import 'package:falsisters_pos_app/core/services/dio_client.dart';
 
 class ShiftRepository {
   final Dio _dio;
 
-  ShiftRepository(this._dio);
+  ShiftRepository(DioClient dioClient) : _dio = dioClient.dio;
 
   Future<List<Shift>> getShiftsByCashierId(String cashierId) async {
     try {
