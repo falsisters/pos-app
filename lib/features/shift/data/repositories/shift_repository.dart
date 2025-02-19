@@ -29,4 +29,15 @@ class ShiftRepository {
       throw Exception('Failed to create shift: ${e.toString()}');
     }
   }
+
+  Future<Shift> clockOutShift(String shiftId) async {
+    try {
+      final response = await _dio.patch('/shift/end', data: {
+        'id': shiftId,
+      });
+      return Shift.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to clock out shift: ${e.toString()}');
+    }
+  }
 }

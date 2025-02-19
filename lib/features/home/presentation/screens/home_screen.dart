@@ -103,6 +103,18 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 Text('Employee: ${activeShift?.employee}'),
+                                const SizedBox(height: 8),
+                                Text(
+                                    'Started: ${activeShift?.clockIn.toLocal()}'),
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: activeShift != null
+                                      ? () => ref
+                                          .read(shiftsProvider.notifier)
+                                          .clockOutShift(activeShift.id)
+                                      : null,
+                                  child: const Text('End Shift'),
+                                ),
                               ],
                             ),
                           ),

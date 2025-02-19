@@ -82,6 +82,16 @@ class ShiftNotifier extends StateNotifier<AsyncValue<List<Shift>>> {
     }
   }
 
+  Future<void> clockOutShift(String shiftId) async {
+    try {
+      await _repository.clockOutShift(shiftId);
+      await Future.delayed(const Duration(seconds: 3));
+      await loadShifts();
+    } catch (e) {
+      throw Exception('Failed to clock out shift: ${e.toString()}');
+    }
+  }
+
   bool hasActiveShift() {
     return state.when(
       data: (shifts) {
