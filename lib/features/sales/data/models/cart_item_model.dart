@@ -6,7 +6,7 @@ class CartItem {
   final double price;
   final int quantity;
   final ProductType type;
-  final int minimumQty;
+  final bool isSpecialPrice;
 
   CartItem({
     required this.productId,
@@ -14,7 +14,7 @@ class CartItem {
     required this.price,
     required this.quantity,
     required this.type,
-    required this.minimumQty,
+    required this.isSpecialPrice,
   });
 
   double get total => price * quantity;

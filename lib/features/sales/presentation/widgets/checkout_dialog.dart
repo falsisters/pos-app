@@ -31,6 +31,7 @@ class CheckoutDialog extends ConsumerWidget {
                           'qty': item.quantity,
                           'price': item.price,
                           'type': item.type.toString().split('.').last,
+                          'isSpecialPrice': item.isSpecialPrice,
                         }))
                     .toList(),
               });

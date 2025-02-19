@@ -2,6 +2,7 @@ import 'package:falsisters_pos_app/features/sales/data/models/cart_item_model.da
 import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 import 'package:falsisters_pos_app/features/sales/data/providers/product_provider.dart';
 import 'package:falsisters_pos_app/features/sales/data/providers/sales_provider.dart';
+import 'package:falsisters_pos_app/features/sales/presentation/widgets/quantity_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +19,6 @@ class CartItemTile extends ConsumerWidget {
         return '25KG';
       case ProductType.FIVE_KG:
         return '5KG';
-      case ProductType.SPECIAL_PRICE:
-        return 'Special Price';
       default:
         return type.toString().split('.').last;
     }
@@ -47,49 +46,66 @@ class CartItemTile extends ConsumerWidget {
 
         return ListTile(
           title: Text(item.name),
-          subtitle: Text('${_getDisplayType(item.type)} - ₱${item.price}'),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('${_getDisplayType(item.type)} - ₱${item.price}'),
+              if (item.isSpecialPrice)
+                Text(
+                  'Special Price Applied',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            ],
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: const Icon(Icons.remove),
-                onPressed: () {
-                  if (item.type == ProductType.SPECIAL_PRICE) {
-                    if (item.quantity <= item.minimumQty) {
-                      ref.read(cartProvider.notifier).removeItem(
+                icon: const Icon(Icons.edit),
+                onPressed: () async {
+                  final result = await showDialog<Map<String, dynamic>>(
+                    context: context,
+                    builder: (context) => QuantityDialog(
+                      price: priceData,
+                      productName: product['name'],
+                      currentStock: priceData['stock'] + item.quantity,
+                      initialQuantity: item.quantity,
+                    ),
+                  );
+
+                  if (result != null) {
+                    if (result['quantity'] == 0) {
+                      ref
+                          .read(cartProvider.notifier)
+                          .removeItem(item.productId, item.type);
+                    } else {
+                      ref.read(cartProvider.notifier).updateQuantity(
                             item.productId,
                             item.type,
+                            result['quantity'],
+                            result['unitPrice'],
+                            result['isSpecialPrice'],
                           );
-                      return;
                     }
-                  }
-
-                  if (item.quantity > 1) {
-                    ref.read(cartProvider.notifier).updateQuantity(
-                          item.productId,
-                          item.type,
-                          item.quantity - 1,
-                        );
-                  } else {
-                    ref.read(cartProvider.notifier).removeItem(
-                          item.productId,
-                          item.type,
-                        );
                   }
                 },
               ),
-              Text('${item.quantity}'),
+              const SizedBox(width: 8),
+              Text(
+                '${item.quantity}',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(width: 8),
               IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: item.quantity < priceData['stock']
-                    ? () {
-                        ref.read(cartProvider.notifier).updateQuantity(
-                              item.productId,
-                              item.type,
-                              item.quantity + 1,
-                            );
-                      }
-                    : null,
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  ref
+                      .read(cartProvider.notifier)
+                      .removeItem(item.productId, item.type);
+                },
               ),
             ],
           ),

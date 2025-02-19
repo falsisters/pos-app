@@ -32,11 +32,9 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
           productId: item.productId,
           name: item.name,
           price: item.price,
-          quantity: item.type == ProductType.SPECIAL_PRICE
-              ? item.minimumQty
-              : state[existingIndex].quantity + 1,
+          quantity: state[existingIndex].quantity + item.quantity,
           type: item.type,
-          minimumQty: item.minimumQty,
+          isSpecialPrice: item.isSpecialPrice,
         ),
         ...state.sublist(existingIndex + 1),
       ];
@@ -51,16 +49,22 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
         .toList();
   }
 
-  void updateQuantity(String productId, ProductType type, int quantity) {
+  void updateQuantity(
+    String productId,
+    ProductType type,
+    int quantity,
+    double unitPrice,
+    bool isSpecialPrice,
+  ) {
     state = state.map((item) {
       if (item.productId == productId && item.type == type) {
         return CartItem(
           productId: item.productId,
           name: item.name,
-          price: item.price,
+          price: unitPrice,
           quantity: quantity,
           type: item.type,
-          minimumQty: item.minimumQty,
+          isSpecialPrice: isSpecialPrice,
         );
       }
       return item;
