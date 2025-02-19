@@ -6,7 +6,6 @@ class DeliveryItem {
   final double price;
   final int quantity;
   final ProductType type;
-  final int minimumQty;
 
   DeliveryItem({
     required this.productId,
@@ -14,7 +13,6 @@ class DeliveryItem {
     required this.price,
     required this.quantity,
     required this.type,
-    required this.minimumQty,
   });
 
   double get total => price * quantity;

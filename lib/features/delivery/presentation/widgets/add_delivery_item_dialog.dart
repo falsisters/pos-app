@@ -101,7 +101,6 @@ class _AddDeliveryItemDialogState extends ConsumerState<AddDeliveryItemDialog> {
                           t.toString() ==
                           'ProductType.${widget.priceData['type']}',
                     ),
-                    minimumQty: widget.product['minimumQty'],
                   ),
                 );
 

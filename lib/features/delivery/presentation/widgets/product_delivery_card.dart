@@ -15,8 +15,10 @@ class ProductDeliveryCard extends ConsumerWidget {
         return '25 Kilograms';
       case 'FIVE_KG':
         return '5 Kilograms';
-      case 'SPECIAL_PRICE':
-        return 'Special Price';
+      case 'PER_KILO':
+        return 'Per Kilo';
+      case 'GANTANG':
+        return 'Gantang';
       default:
         return type;
     }
@@ -36,8 +38,6 @@ class ProductDeliveryCard extends ConsumerWidget {
             ),
             const Spacer(),
             ...product['Price']
-                .where(
-                    (price) => !['GANTANG', 'PER_KILO'].contains(price['type']))
                 .map<Widget>(
                   (price) => ListTile(
                     title: Text(

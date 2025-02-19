@@ -17,8 +17,10 @@ class DeliveryCartItemTile extends ConsumerWidget {
         return '25KG';
       case ProductType.FIVE_KG:
         return '5KG';
-      case ProductType.SPECIAL_PRICE:
-        return 'Special Price';
+      case ProductType.PER_KILO:
+        return 'Per Kilo';
+      case ProductType.GANTANG:
+        return 'Gantang';
       default:
         return type.toString().split('.').last;
     }

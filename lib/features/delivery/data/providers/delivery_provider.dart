@@ -30,7 +30,6 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
           price: item.price,
           quantity: item.quantity,
           type: item.type,
-          minimumQty: item.minimumQty,
         ),
         ...state.sublist(existingIndex + 1),
       ];
@@ -54,7 +53,6 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
           price: item.price,
           quantity: quantity,
           type: item.type,
-          minimumQty: item.minimumQty,
         );
       }
       return item;
