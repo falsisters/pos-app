@@ -6,7 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+
+  // Load environment variables
+  await dotenv.load(fileName: "assets/.env");
+
+  // Initialize any web-specific services here
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -17,12 +22,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cashier App',
+      debugShowCheckedModeBanner: false, // Remove debug banner
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        // Add more theme configurations
       ),
       home: const AuthGuard(
         child: HomeScreen(),
       ),
+      // Add error handling
+      builder: (context, child) {
+        return child ?? const SizedBox.shrink();
+      },
     );
   }
 }
