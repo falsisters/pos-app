@@ -1,3 +1,4 @@
+import 'package:falsisters_pos_app/features/delivery/presentation/screens/delivery_screen.dart';
 import 'package:falsisters_pos_app/features/home/presentation/widgets/quick_action_card.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screens/sales_screen.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,10 @@ class QuickActions extends StatelessWidget {
           icon: Icons.local_shipping,
           color: Colors.blue,
           onTap: () {
-            // TODO: Navigate to deliveries screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const DeliveryScreen()),
+            );
           },
         ),
       );
