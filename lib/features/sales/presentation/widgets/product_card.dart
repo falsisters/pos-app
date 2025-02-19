@@ -9,6 +9,21 @@ class ProductCard extends ConsumerWidget {
 
   const ProductCard({super.key, required this.product});
 
+  Object _getDisplayType(String type) {
+    switch (type) {
+      case 'FIFTY_KG':
+        return '50 Kilograms';
+      case 'TWENTY_FIVE_KG':
+        return '25 Kilograms';
+      case 'FIVE_KG':
+        return '5 Kilograms';
+      case 'SPECIAL_PRICE':
+        return 'Special Price';
+      default:
+        return type;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
@@ -23,30 +38,102 @@ class ProductCard extends ConsumerWidget {
             ),
             const Spacer(),
             ...product['Price']
+                .where(
+                    (price) => !['GANTANG', 'PER_KILO'].contains(price['type']))
                 .map<Widget>(
                   (price) => ListTile(
-                    title: Text('${price['type']}: \$${price['price']}'),
-                    subtitle: Text('Stock: ${price['stock']}'),
+                    enabled: price['stock'] > 0,
+                    title: Text(
+                      '${_getDisplayType(price['type'])}: ₱${price['price']}',
+                      style: TextStyle(
+                        color: price['stock'] > 0
+                            ? null
+                            : Theme.of(context).disabledColor,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Stock: ${price['stock']}',
+                          style: TextStyle(
+                            color: price['stock'] > 0
+                                ? null
+                                : Theme.of(context).disabledColor,
+                          ),
+                        ),
+                        if (price['type'] == 'SPECIAL_PRICE')
+                          Text(
+                            'Minimum Quantity: ${product['minimumQty']}',
+                            style: TextStyle(
+                              color: price['stock'] > 0
+                                  ? null
+                                  : Theme.of(context).disabledColor,
+                            ),
+                          ),
+                      ],
+                    ),
                     trailing: IconButton(
                       icon: const Icon(Icons.add_shopping_cart),
-                      onPressed: () {
-                        if (price['stock'] > 0) {
-                          ref.read(cartProvider.notifier).addItem(
-                                CartItem(
-                                  productId: product['id'],
-                                  name: product['name'],
-                                  price: price['price'].toDouble(),
-                                  quantity: price['type'] == 'SPECIAL_PRICE'
-                                      ? product['minimumQty']
-                                      : 1,
-                                  type: ProductType.values.firstWhere((t) =>
-                                      t.toString() ==
-                                      'ProductType.${price['type']}'),
-                                  minimumQty: product['minimumQty'],
+                      onPressed: price['stock'] > 0
+                          ? () {
+                              // Check current cart quantity for this item
+                              final cartItems = ref.read(cartProvider);
+                              CartItem? existingItem;
+                              try {
+                                existingItem = cartItems.firstWhere(
+                                  (item) =>
+                                      item.productId == product['id'] &&
+                                      item.type.toString() ==
+                                          'ProductType.${price['type']}',
+                                );
+                              } catch (e) {
+                                existingItem = null;
+                              }
+
+                              final currentQty = existingItem?.quantity ?? 0;
+                              final addQty = price['type'] == 'SPECIAL_PRICE'
+                                  ? product['minimumQty']
+                                  : 1;
+
+                              if (currentQty + addQty > price['stock']) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Cannot add more items. Available stock: ${price['stock']}',
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(20.0),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              ref.read(cartProvider.notifier).addItem(
+                                    CartItem(
+                                      productId: product['id'],
+                                      name: product['name'],
+                                      price: price['price'].toDouble(),
+                                      quantity: addQty,
+                                      type: ProductType.values.firstWhere((t) =>
+                                          t.toString() ==
+                                          'ProductType.${price['type']}'),
+                                      minimumQty: product['minimumQty'],
+                                    ),
+                                  );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('${product['name']} added to cart'),
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: const EdgeInsets.all(20.0),
+                                  duration: const Duration(seconds: 1),
                                 ),
                               );
-                        }
-                      },
+                            }
+                          : null,
                     ),
                   ),
                 )

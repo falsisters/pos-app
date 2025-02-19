@@ -9,6 +9,7 @@ class SalesRepository {
   Future<List<dynamic>> getProducts() async {
     try {
       final response = await _dio.get('/product/cashier');
+      print(response.data);
       return response.data;
     } catch (e) {
       throw Exception('Failed to get products: ${e.toString()}');

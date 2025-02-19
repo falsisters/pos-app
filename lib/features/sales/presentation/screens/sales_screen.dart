@@ -1,3 +1,4 @@
+import 'package:falsisters_pos_app/features/sales/data/providers/product_provider.dart';
 import 'package:falsisters_pos_app/features/sales/data/providers/sales_provider.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screens/cart_screen.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/widgets/product_grid.dart';
@@ -9,7 +10,7 @@ class SalesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final products = ref.watch(productsProvider);
+    final products = ref.watch(productsNotifierProvider);
     final cart = ref.watch(cartProvider);
 
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:falsisters_pos_app/features/sales/data/providers/product_provider.dart';
 import 'package:falsisters_pos_app/features/sales/data/providers/sales_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,11 +36,31 @@ class CheckoutDialog extends ConsumerWidget {
               });
 
               ref.read(cartProvider.notifier).clearCart();
+
+              // Refresh products after successful sale
+              await ref
+                  .read(productsNotifierProvider.notifier)
+                  .refreshProducts();
+
               Navigator.of(context).pop();
               Navigator.of(context).pop();
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Sale completed successfully'),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.all(20.0),
+                  backgroundColor: Colors.green,
+                ),
+              );
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(e.toString())),
+                SnackBar(
+                  content: Text(e.toString()),
+                  behavior: SnackBarBehavior.floating,
+                  margin: const EdgeInsets.all(20.0),
+                  backgroundColor: Colors.red,
+                ),
               );
             }
           },
