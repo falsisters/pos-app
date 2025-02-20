@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:falsisters_pos_app/core/models/shift.dart';
 import 'package:falsisters_pos_app/core/services/dio_client.dart';
+import 'package:falsisters_pos_app/features/shift/data/models/shift.dart';
 
 class ShiftRepository {
   final Dio _dio;
