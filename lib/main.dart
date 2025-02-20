@@ -1,3 +1,4 @@
+import 'package:falsisters_pos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const Text('Hello, World!'),
+      home: const HomeScreen(),
     );
   }
 }
