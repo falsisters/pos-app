@@ -29,7 +29,7 @@ class DeliveryItemTile extends ConsumerWidget {
     return ListTile(
       title: Text(item.name),
       subtitle: Text(
-        '${_parseType(item.type)} - ${item.price} x ${item.quantity} = ${item.total}',
+        _parseType(item.type),
       ),
       trailing: IconButton(
         icon: const Icon(Icons.delete),

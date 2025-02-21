@@ -1,16 +1,18 @@
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:falsisters_pos_app/features/delivery/data/providers/delivery_provider.dart';
 import 'package:falsisters_pos_app/features/delivery/data/models/delivery_item_model.dart';
 import 'package:falsisters_pos_app/features/sales/data/models/product_model.dart';
-import 'package:falsisters_pos_app/features/sales/data/models/price_model.dart';
 
 class AddToDeliveryDialog extends ConsumerStatefulWidget {
   final Product product;
-  final Price price;
+  final ProductType type;
+  final double price;
 
   const AddToDeliveryDialog({
     required this.product,
+    required this.type,
     required this.price,
   });
 
@@ -24,8 +26,6 @@ class _AddToDeliveryDialogState extends ConsumerState<AddToDeliveryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final total = widget.price.price * quantity;
-
     return AlertDialog(
       title: Text('Add ${widget.product.name} to Delivery'),
       content: Column(
@@ -42,15 +42,11 @@ class _AddToDeliveryDialogState extends ConsumerState<AddToDeliveryDialog> {
               ),
               Text('$quantity'),
               IconButton(
-                onPressed: quantity < widget.price.stock
-                    ? () => setState(() => quantity++)
-                    : null,
+                onPressed: () => setState(() => quantity++),
                 icon: const Icon(Icons.add),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text('Total: $total'),
         ],
       ),
       actions: [
@@ -64,9 +60,9 @@ class _AddToDeliveryDialogState extends ConsumerState<AddToDeliveryDialog> {
                   DeliveryItem(
                     productId: widget.product.id,
                     name: widget.product.name,
-                    price: widget.price.price,
                     quantity: quantity,
-                    type: widget.price.type,
+                    type: widget.type,
+                    price: widget.price,
                   ),
                 );
             Navigator.pop(context);

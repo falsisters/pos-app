@@ -27,9 +27,9 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
         DeliveryItem(
           productId: item.productId,
           name: item.name,
-          price: item.price,
           quantity: item.quantity,
           type: item.type,
+          price: item.price,
         ),
         ...state.sublist(existingIndex + 1),
       ];
@@ -50,8 +50,8 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
         return DeliveryItem(
           productId: item.productId,
           name: item.name,
-          price: item.price,
           quantity: quantity,
+          price: item.price,
           type: item.type,
         );
       }
@@ -62,6 +62,4 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
   void clearCart() {
     state = [];
   }
-
-  double get total => state.fold(0, (sum, item) => sum + item.total);
 }

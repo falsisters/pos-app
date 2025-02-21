@@ -14,18 +14,20 @@ class DeliveryCheckoutDialog extends ConsumerStatefulWidget {
 class _DeliveryCheckoutDialogState
     extends ConsumerState<DeliveryCheckoutDialog> {
   final _driverController = TextEditingController();
+  final _totalController = TextEditingController();
   bool isProcessing = false;
 
   @override
   void dispose() {
     _driverController.dispose();
+    _totalController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final cartItems = ref.watch(deliveryCartProvider);
-    final total = ref.watch(deliveryCartProvider.notifier).total;
+    final attachments = ref.watch(deliveryStateProvider).attachments;
 
     return AlertDialog(
       title: const Text('Create Delivery'),
@@ -40,8 +42,18 @@ class _DeliveryCheckoutDialogState
             ),
           ),
           const SizedBox(height: 16),
+          TextField(
+            controller: _totalController,
+            decoration: const InputDecoration(
+              labelText: 'Total Value',
+              hintText: 'Enter total value',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 16),
           Text('Total Items: ${cartItems.length}'),
-          Text('Total Value: $total'),
+          if (attachments.isNotEmpty)
+            Text('Attachments: ${attachments.length}'),
         ],
       ),
       actions: [
@@ -53,10 +65,11 @@ class _DeliveryCheckoutDialogState
           onPressed: isProcessing
               ? null
               : () async {
-                  if (_driverController.text.isEmpty) {
+                  if (_driverController.text.isEmpty ||
+                      _totalController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Please enter driver name'),
+                        content: Text('Please fill in all fields'),
                       ),
                     );
                     return;
@@ -70,18 +83,19 @@ class _DeliveryCheckoutDialogState
                         .setDriver(_driverController.text);
 
                     // Create delivery
+                    final total = double.parse(_totalController.text);
                     await ref.read(deliveryRepositoryProvider).createDelivery({
                       'driver': _driverController.text,
                       'total': total,
-                      'items': cartItems
+                      'deliveryItems': cartItems
                           .map((item) => {
                                 'productId': item.productId,
                                 'qty': item.quantity,
-                                'price': item.price,
                                 'type': item.type.name,
+                                'price': item.price,
                               })
                           .toList(),
-                    });
+                    }, attachments);
 
                     // Clear cart and state
                     ref.read(deliveryCartProvider.notifier).clearCart();

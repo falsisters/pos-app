@@ -1,5 +1,6 @@
 import 'package:falsisters_pos_app/features/delivery/data/models/delivery_state_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 final deliveryStateProvider =
     StateNotifierProvider<DeliveryStateNotifier, DeliveryState>((ref) {
@@ -20,13 +21,13 @@ class DeliveryStateNotifier extends StateNotifier<DeliveryState> {
     );
   }
 
-  void addAttachment(String attachment) {
+  void addAttachment(XFile attachment) {
     state = state.copyWith(
       attachments: [...state.attachments, attachment],
     );
   }
 
-  void removeAttachment(String attachment) {
+  void removeAttachment(XFile attachment) {
     state = state.copyWith(
       attachments: state.attachments.where((a) => a != attachment).toList(),
     );

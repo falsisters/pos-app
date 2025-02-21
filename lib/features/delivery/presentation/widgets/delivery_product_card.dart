@@ -107,7 +107,8 @@ class DeliveryProductCard extends ConsumerWidget {
       context: context,
       builder: (context) => AddToDeliveryDialog(
         product: product,
-        price: price,
+        type: price.type,
+        price: price.price,
       ),
     );
   }
