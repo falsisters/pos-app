@@ -28,6 +28,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
           productId: item.productId,
           name: item.name,
           price: item.price,
+          picture: item.picture,
           quantity: state[existingIndex].quantity + item.quantity,
           type: item.type,
           isSpecialPrice: item.isSpecialPrice,
@@ -45,6 +46,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
         return CartItem(
           productId: item.productId,
           name: item.name,
+          picture: item.picture,
           price: item.price,
           quantity: quantity,
           type: item.type,

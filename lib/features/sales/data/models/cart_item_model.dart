@@ -3,6 +3,7 @@ import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.
 class CartItem {
   final String productId;
   final String name;
+  final String picture;
   final double price;
   final int quantity;
   final ProductType type;
@@ -11,6 +12,7 @@ class CartItem {
   CartItem({
     required this.productId,
     required this.name,
+    required this.picture,
     required this.price,
     required this.quantity,
     required this.type,
