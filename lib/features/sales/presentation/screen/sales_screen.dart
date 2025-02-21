@@ -10,12 +10,14 @@ class SalesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
-        // Products section (left half)
+        // Products section (left 60%)
         Expanded(
+          flex: 60,
           child: ProductsSection(),
         ),
-        // Cart section (right half)
+        // Cart section (right 40%)
         Expanded(
+          flex: 40,
           child: CartSection(),
         ),
       ],

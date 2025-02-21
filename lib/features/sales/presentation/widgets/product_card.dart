@@ -10,13 +10,29 @@ class ProductCard extends ConsumerWidget {
 
   const ProductCard({required this.product});
 
+  String _parseType(ProductType type) {
+    switch (type) {
+      case ProductType.FIFTY_KG:
+        return '50 Kilograms';
+      case ProductType.TWENTY_FIVE_KG:
+        return '25 Kilograms';
+      case ProductType.FIVE_KG:
+        return '5 Kilograms';
+      case ProductType.PER_KILO:
+        return 'Kilo';
+      case ProductType.GANTANG:
+        return 'Gantang';
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
+          SizedBox(
+            height: 200,
             child: Image.network(
               product.picture,
               fit: BoxFit.cover,
@@ -30,25 +46,57 @@ class ProductCard extends ConsumerWidget {
                 Text(
                   product.name,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: ProductType.values.map((type) {
-                    final price = product.getPriceByType(type);
-                    final isAvailable = price != null && price.stock > 0;
-
-                    return FilledButton(
-                      onPressed: isAvailable
-                          ? () =>
-                              _showAddToCartDialog(context, ref, product, price)
-                          : null,
-                      child: Text('${type.name}\n${price?.price ?? '-'}'),
-                    );
-                  }).toList(),
+                SizedBox(
+                  height: 150, // Add a fixed height for the scroll area
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: product.prices.map((price) {
+                        final isAvailable = price.stock > 0;
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${_parseType(price.type)} - ${price.price}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    if (price.specialPrices.isNotEmpty) ...[
+                                      ...price.specialPrices.map((sp) => Text(
+                                            'Special: ${sp.specialPrice} (min ${sp.minimumQty})',
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.green),
+                                          )),
+                                    ],
+                                    Text(
+                                      'Stock: ${price.stock}',
+                                      style: const TextStyle(fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              FilledButton(
+                                onPressed: isAvailable
+                                    ? () => _showAddToCartDialog(
+                                        context, ref, product, price)
+                                    : null,
+                                child: const Text('Add'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ],
             ),

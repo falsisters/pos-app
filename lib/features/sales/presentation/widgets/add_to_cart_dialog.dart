@@ -37,6 +37,7 @@ class _AddToCartDialogState extends ConsumerState<AddToCartDialog> {
       title: Text('Add ${widget.product.name}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [

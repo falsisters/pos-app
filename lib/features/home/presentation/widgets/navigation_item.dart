@@ -14,14 +14,17 @@ class NavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      selected:
-          index == 0, // You might want to pass the selected state as a prop
+    return InkWell(
       onTap: () {
         // Handle navigation here or pass a callback
       },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon),
+          Text(label),
+        ],
+      ),
     );
   }
 }
