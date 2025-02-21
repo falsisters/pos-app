@@ -1,8 +1,0 @@
-enum ProductType {
-  FIFTY_KG,
-  TWENTY_FIVE_KG,
-  FIVE_KG,
-  SPECIAL_PRICE,
-  PER_KILO,
-  GANTANG
-}
