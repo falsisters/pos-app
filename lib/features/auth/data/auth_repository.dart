@@ -10,6 +10,7 @@ class AuthRepository {
 
   Future<String> login(String name, String password) async {
     try {
+      print('name: $name, password: $password');
       final response = await _dio.post(
         ApiConstants.loginEndpoint,
         data: {
@@ -27,7 +28,6 @@ class AuthRepository {
   Future<Cashier> getCashierInfo() async {
     try {
       final response = await _dio.get(ApiConstants.cashierInfoEndpoint);
-      print(response.data);
       return Cashier.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to get cashier info: ${e.toString()}');

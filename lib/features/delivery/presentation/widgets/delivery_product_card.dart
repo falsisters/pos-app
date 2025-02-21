@@ -1,14 +1,14 @@
+import 'package:falsisters_pos_app/features/delivery/presentation/widgets/add_to_delivery_dialog.dart';
 import 'package:falsisters_pos_app/features/sales/data/models/price_model.dart';
-import 'package:falsisters_pos_app/features/sales/data/models/product_model.dart';
-import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
-import 'package:falsisters_pos_app/features/sales/presentation/widgets/add_to_cart_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_model.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 
-class ProductCard extends ConsumerWidget {
+class DeliveryProductCard extends ConsumerWidget {
   final Product product;
 
-  const ProductCard({required this.product});
+  const DeliveryProductCard({required this.product});
 
   String _parseType(ProductType type) {
     switch (type) {
@@ -52,7 +52,7 @@ class ProductCard extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 SizedBox(
-                  height: 150, // Add a fixed height for the scroll area
+                  height: 150,
                   child: SingleChildScrollView(
                     child: Column(
                       children: product.prices.map((price) {
@@ -69,25 +69,17 @@ class ProductCard extends ConsumerWidget {
                                       '${_parseType(price.type)} - ${price.price}',
                                       style: const TextStyle(fontSize: 14),
                                     ),
-                                    if (price.specialPrices.isNotEmpty) ...[
-                                      ...price.specialPrices.map((sp) => Text(
-                                            'Special: ${sp.specialPrice} (min ${sp.minimumQty})',
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.green),
-                                          )),
-                                    ],
                                     Text(
                                       'Stock: ${price.stock}',
                                       style: const TextStyle(fontSize: 14),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
                               FilledButton(
                                 onPressed: isAvailable
-                                    ? () => _showAddToCartDialog(
-                                        context, ref, product, price)
+                                    ? () => _showAddToDeliveryDialog(
+                                        context, product, price)
                                     : null,
                                 child: const Text('Add'),
                               ),
@@ -106,17 +98,17 @@ class ProductCard extends ConsumerWidget {
     );
   }
 
-  void _showAddToCartDialog(
+  void _showAddToDeliveryDialog(
     BuildContext context,
-    WidgetRef ref,
     Product product,
     Price price,
   ) {
     showDialog(
       context: context,
-      builder: (context) => AddToCartDialog(
+      builder: (context) => AddToDeliveryDialog(
         product: product,
-        price: price,
+        type: price.type,
+        price: price.price,
       ),
     );
   }

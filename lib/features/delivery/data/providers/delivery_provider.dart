@@ -1,7 +1,7 @@
-import 'package:falsisters_pos_app/core/constants/product_type.dart';
 import 'package:falsisters_pos_app/core/providers/dio_provider.dart';
 import 'package:falsisters_pos_app/features/delivery/data/models/delivery_item_model.dart';
 import 'package:falsisters_pos_app/features/delivery/data/repositories/delivery_repository.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final deliveryRepositoryProvider = Provider((ref) {
@@ -27,9 +27,9 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
         DeliveryItem(
           productId: item.productId,
           name: item.name,
-          price: item.price,
           quantity: item.quantity,
           type: item.type,
+          price: item.price,
         ),
         ...state.sublist(existingIndex + 1),
       ];
@@ -50,8 +50,8 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
         return DeliveryItem(
           productId: item.productId,
           name: item.name,
-          price: item.price,
           quantity: quantity,
+          price: item.price,
           type: item.type,
         );
       }
@@ -62,6 +62,4 @@ class DeliveryCartNotifier extends StateNotifier<List<DeliveryItem>> {
   void clearCart() {
     state = [];
   }
-
-  double get total => state.fold(0, (sum, item) => sum + item.total);
 }

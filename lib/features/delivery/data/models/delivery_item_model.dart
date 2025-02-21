@@ -1,10 +1,10 @@
-import 'package:falsisters_pos_app/core/constants/product_type.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 
 class DeliveryItem {
   final String productId;
   final String name;
-  final double price;
   final int quantity;
+  final double price;
   final ProductType type;
 
   DeliveryItem({
@@ -14,6 +14,4 @@ class DeliveryItem {
     required this.quantity,
     required this.type,
   });
-
-  double get total => price * quantity;
 }

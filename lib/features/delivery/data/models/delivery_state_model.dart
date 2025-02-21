@@ -1,8 +1,11 @@
+import 'package:image_picker/image_picker.dart';
+
 class DeliveryState {
   final bool isFinished;
   final DateTime? timeFinished;
   final String driver;
-  final List<String> attachments;
+  final List<XFile>
+      attachments; // Changed to XFile for image_picker compatibility
 
   DeliveryState({
     this.isFinished = false,
@@ -15,7 +18,7 @@ class DeliveryState {
     bool? isFinished,
     DateTime? timeFinished,
     String? driver,
-    List<String>? attachments,
+    List<XFile>? attachments,
   }) {
     return DeliveryState(
       isFinished: isFinished ?? this.isFinished,
