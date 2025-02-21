@@ -9,11 +9,6 @@ final salesRepositoryProvider = Provider((ref) {
   return SalesRepository(dioClient);
 });
 
-final productsProvider = FutureProvider((ref) {
-  final repository = ref.watch(salesRepositoryProvider);
-  return repository.getProducts();
-});
-
 final cartProvider = StateNotifierProvider<CartNotifier, List<CartItem>>((ref) {
   return CartNotifier();
 });
@@ -23,7 +18,8 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
 
   void addItem(CartItem item) {
     final existingIndex = state.indexWhere(
-        (i) => i.productId == item.productId && i.type == item.type);
+      (i) => i.productId == item.productId && i.type == item.type,
+    );
 
     if (existingIndex >= 0) {
       state = [
@@ -31,7 +27,6 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
         CartItem(
           productId: item.productId,
           name: item.name,
-          picture: item.picture,
           price: item.price,
           quantity: state[existingIndex].quantity + item.quantity,
           type: item.type,
@@ -44,38 +39,32 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     }
   }
 
-  void removeItem(String productId, ProductType type) {
-    state = state
-        .where((item) => !(item.productId == productId && item.type == type))
-        .toList();
-  }
-
-  void updateQuantity(
-    String productId,
-    ProductType type,
-    int quantity,
-    double unitPrice,
-    bool isSpecialPrice,
-  ) {
+  void updateQuantity(String productId, ProductType type, int quantity) {
     state = state.map((item) {
       if (item.productId == productId && item.type == type) {
         return CartItem(
           productId: item.productId,
           name: item.name,
-          picture: item.picture,
-          price: unitPrice,
+          price: item.price,
           quantity: quantity,
           type: item.type,
-          isSpecialPrice: isSpecialPrice,
+          isSpecialPrice: item.isSpecialPrice,
         );
       }
       return item;
     }).toList();
   }
 
+  void removeItem(String productId, ProductType type) {
+    state = state
+        .where((item) => !(item.productId == productId && item.type == type))
+        .toList();
+  }
+
   void clearCart() {
     state = [];
   }
 
-  double get total => state.fold(0, (sum, item) => sum + item.total);
+  double get total =>
+      state.fold(0, (sum, item) => sum + (item.price * item.quantity));
 }
