@@ -1,5 +1,6 @@
 // lib/features/home/presentation/screens/home_screen.dart
 import 'package:falsisters_pos_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:falsisters_pos_app/features/sales/presentation/screen/sales_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:falsisters_pos_app/core/constants/permissions.dart';
@@ -122,7 +123,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildScreen(int index) {
     switch (index) {
       case 0:
-        return const Center(child: Text('Sales Screen'));
+        return const SalesScreen();
       case 1:
         return const Center(child: Text('Deliveries Screen'));
       case 2:
