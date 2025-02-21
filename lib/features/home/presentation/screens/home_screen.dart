@@ -1,5 +1,6 @@
 // lib/features/home/presentation/screens/home_screen.dart
 import 'package:falsisters_pos_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:falsisters_pos_app/features/delivery/presentation/screens/delivery_screen.dart';
 import 'package:falsisters_pos_app/features/home/presentation/widgets/profile_section.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screen/sales_screen.dart';
 import 'package:flutter/material.dart';
@@ -215,7 +216,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       case 0:
         return const SalesScreen();
       case 1:
-        return const Center(child: Text('Deliveries Screen'));
+        return const DeliveryScreen();
       case 2:
         return const Center(child: Text('Stock Screen'));
       case 3:

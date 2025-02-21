@@ -1,7 +1,7 @@
-import 'package:falsisters_pos_app/core/constants/product_type.dart';
 import 'package:falsisters_pos_app/core/providers/dio_provider.dart';
 import 'package:falsisters_pos_app/features/delivery/data/models/delivery_item_model.dart';
 import 'package:falsisters_pos_app/features/delivery/data/repositories/delivery_repository.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final deliveryRepositoryProvider = Provider((ref) {

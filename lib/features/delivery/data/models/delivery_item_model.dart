@@ -1,4 +1,4 @@
-import 'package:falsisters_pos_app/core/constants/product_type.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 
 class DeliveryItem {
   final String productId;
