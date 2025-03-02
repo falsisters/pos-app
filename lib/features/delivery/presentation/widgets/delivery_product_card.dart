@@ -55,7 +55,9 @@ class DeliveryProductCard extends ConsumerWidget {
                   height: 150,
                   child: SingleChildScrollView(
                     child: Column(
-                      children: product.prices.map((price) {
+                      children: product.prices
+                          .where((price) => price.type != ProductType.GANTANG)
+                          .map((price) {
                         final isAvailable = price.stock > 0;
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 4),

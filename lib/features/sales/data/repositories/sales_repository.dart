@@ -9,18 +9,59 @@ class SalesRepository {
   Future<List<dynamic>> getProducts() async {
     try {
       final response = await _dio.get('/product/cashier');
-      print(response.data);
+
+      if (response.data['error'] == true) {
+        final message = response.data['message'];
+        if (message is List) {
+          throw Exception(message.join(', '));
+        } else if (message is String) {
+          throw Exception(message);
+        } else {
+          throw Exception('An error has occurred');
+        }
+      }
+
       return response.data;
     } catch (e) {
-      throw Exception('Failed to get products: ${e.toString()}');
+      String message = 'An error has occurred';
+
+      if (e is DioException && e.response?.data != null) {
+        message = e.response?.data['message'] ?? message;
+      } else if (e is Exception) {
+        message = e.toString().replaceFirst('Exception: ', '');
+      } else {
+        message = e.toString();
+      }
+      throw Exception('Failed to get products: $message');
     }
   }
 
   Future<void> createSale(Map<String, dynamic> saleData) async {
     try {
-      await _dio.post('/sale/create', data: saleData);
+      final response = await _dio.post('/sale/create', data: saleData);
+
+      if (response.data['error'] == true) {
+        final message = response.data['message'];
+        if (message is List) {
+          throw Exception(message.join(', '));
+        } else if (message is String) {
+          throw Exception(message);
+        } else {
+          throw Exception('An error has occurred');
+        }
+      }
     } catch (e) {
-      throw Exception('Failed to create sale: ${e.toString()}');
+      String message = 'An error has occurred';
+
+      if (e is DioException && e.response?.data != null) {
+        message = e.response?.data['message'] ?? message;
+      } else if (e is Exception) {
+        message = e.toString().replaceFirst('Exception: ', '');
+      } else {
+        message = e.toString();
+      }
+
+      throw Exception('Failed to create sale: $message');
     }
   }
 }

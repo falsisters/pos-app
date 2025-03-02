@@ -21,7 +21,20 @@ class AuthGuard extends ConsumerWidget {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(
-        child: Text('Error: ${error.toString()}'),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('An error has occured during authentication'),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(authStateProvider.notifier).logout();
+                },
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

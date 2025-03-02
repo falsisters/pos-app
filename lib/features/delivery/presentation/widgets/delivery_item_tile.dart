@@ -27,7 +27,7 @@ class DeliveryItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      title: Text(item.name),
+      title: Text("${item.name} - ${item.quantity}"),
       subtitle: Text(
         _parseType(item.type),
       ),
