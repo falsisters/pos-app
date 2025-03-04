@@ -3,6 +3,7 @@ import 'package:falsisters_pos_app/features/auth/presentation/screens/login_scre
 import 'package:falsisters_pos_app/features/delivery/presentation/screens/delivery_screen.dart';
 import 'package:falsisters_pos_app/features/home/presentation/widgets/profile_section.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screen/sales_screen.dart';
+import 'package:falsisters_pos_app/features/stocks/presentation/screens/stock_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:falsisters_pos_app/core/constants/permissions.dart';
@@ -218,7 +219,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       case 1:
         return const DeliveryScreen();
       case 2:
-        return const Center(child: Text('Stock Screen'));
+        return const StockScreen();
       case 3:
         return const Center(child: Text('Profits Screen'));
       case 4:

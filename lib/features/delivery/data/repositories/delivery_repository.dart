@@ -42,7 +42,9 @@ class DeliveryRepository {
         }
       }
 
-      final response = await _dio.post(
+      print('formData: ${formData.fields}');
+
+      await _dio.post(
         '/delivery/create',
         data: formData,
         options: Options(
@@ -51,29 +53,8 @@ class DeliveryRepository {
           },
         ),
       );
-
-      if (response.data['error'] == true) {
-        final message = response.data['message'];
-        if (message is List) {
-          throw Exception(message.join(', '));
-        } else if (message is String) {
-          throw Exception(message);
-        } else {
-          throw Exception('An error has occurred');
-        }
-      }
     } catch (e) {
-      String message = 'An error has occurred';
-
-      if (e is DioException && e.response?.data != null) {
-        message = e.response?.data['message'] ?? message;
-      } else if (e is Exception) {
-        message = e.toString().replaceFirst('Exception: ', '');
-      } else {
-        message = e.toString();
-      }
-
-      throw Exception('Failed to create delivery: $message');
+      throw Exception('Failed to create delivery: ${e.toString()}');
     }
   }
 }

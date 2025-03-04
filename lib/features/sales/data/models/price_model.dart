@@ -33,4 +33,15 @@ class Price {
           [],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'price': price,
+      'stock': stock,
+      'type': type.toString().split('.').last,
+      'productId': productId,
+      'SpecialPrice': specialPrices.map((e) => e.toJson()).toList(),
+    };
+  }
 }

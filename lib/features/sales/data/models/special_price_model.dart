@@ -16,4 +16,12 @@ class SpecialPrice {
       minimumQty: json['minimumQty'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'specialPrice': specialPrice,
+      'minimumQty': minimumQty,
+    };
+  }
 }

@@ -10,58 +10,17 @@ class SalesRepository {
     try {
       final response = await _dio.get('/product/cashier');
 
-      if (response.data['error'] == true) {
-        final message = response.data['message'];
-        if (message is List) {
-          throw Exception(message.join(', '));
-        } else if (message is String) {
-          throw Exception(message);
-        } else {
-          throw Exception('An error has occurred');
-        }
-      }
-
       return response.data;
     } catch (e) {
-      String message = 'An error has occurred';
-
-      if (e is DioException && e.response?.data != null) {
-        message = e.response?.data['message'] ?? message;
-      } else if (e is Exception) {
-        message = e.toString().replaceFirst('Exception: ', '');
-      } else {
-        message = e.toString();
-      }
-      throw Exception('Failed to get products: $message');
+      throw Exception('Failed to get products: ${e.toString()}');
     }
   }
 
   Future<void> createSale(Map<String, dynamic> saleData) async {
     try {
-      final response = await _dio.post('/sale/create', data: saleData);
-
-      if (response.data['error'] == true) {
-        final message = response.data['message'];
-        if (message is List) {
-          throw Exception(message.join(', '));
-        } else if (message is String) {
-          throw Exception(message);
-        } else {
-          throw Exception('An error has occurred');
-        }
-      }
+      await _dio.post('/sale/create', data: saleData);
     } catch (e) {
-      String message = 'An error has occurred';
-
-      if (e is DioException && e.response?.data != null) {
-        message = e.response?.data['message'] ?? message;
-      } else if (e is Exception) {
-        message = e.toString().replaceFirst('Exception: ', '');
-      } else {
-        message = e.toString();
-      }
-
-      throw Exception('Failed to create sale: $message');
+      throw Exception('Failed to create sale: ${e.toString()}');
     }
   }
 }
