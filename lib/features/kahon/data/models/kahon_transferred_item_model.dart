@@ -5,6 +5,7 @@ class KahonTransferredItem {
   final int qty;
   final Price price;
   final String kahonId;
+  final double value;
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<KahonTransferredItemModifier> kahonTransferredItemModifiers;
@@ -13,6 +14,7 @@ class KahonTransferredItem {
     required this.id,
     required this.qty,
     required this.price,
+    this.value = 0,
     required this.kahonId,
     required this.createdAt,
     required this.updatedAt,
@@ -25,6 +27,7 @@ class KahonTransferredItem {
       qty: json['qty'],
       price: Price.fromJson(json['price']),
       kahonId: json['kahonId'],
+      value: json['value'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       kahonTransferredItemModifiers:
@@ -40,6 +43,7 @@ class KahonTransferredItem {
       'qty': qty,
       'price': price.toJson(),
       'kahonId': kahonId,
+      'value': value,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
       'kahonTransferredItemModifiers':
@@ -54,6 +58,7 @@ class KahonTransferredItemModifier {
   final String id;
   final int index;
   final OperationType operation;
+  final double value;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String kahonTransferredItemId;
@@ -62,6 +67,7 @@ class KahonTransferredItemModifier {
     required this.id,
     required this.index,
     required this.operation,
+    this.value = 0,
     required this.createdAt,
     required this.updatedAt,
     required this.kahonTransferredItemId,
@@ -71,6 +77,7 @@ class KahonTransferredItemModifier {
     return KahonTransferredItemModifier(
       id: json['id'],
       index: json['index'],
+      value: json['value'],
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),
@@ -83,6 +90,7 @@ class KahonTransferredItemModifier {
     return {
       'id': id,
       'index': index,
+      'value': value,
       'operation': operation.toString().split('.').last,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),

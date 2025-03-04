@@ -60,6 +60,7 @@ class Kahon {
 class KahonTotalModifier {
   final String id;
   final int index;
+  final double value;
   final OperationType operation;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -68,6 +69,7 @@ class KahonTotalModifier {
   KahonTotalModifier({
     required this.id,
     required this.index,
+    this.value = 0,
     required this.operation,
     required this.createdAt,
     required this.updatedAt,
@@ -78,6 +80,7 @@ class KahonTotalModifier {
     return KahonTotalModifier(
       id: json['id'],
       index: json['index'],
+      value: json['value'],
       operation: OperationType.values.firstWhere(
         (e) => e.toString() == 'OperationType.${json['operation']}',
       ),
@@ -90,6 +93,7 @@ class KahonTotalModifier {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'value': value,
       'index': index,
       'operation': operation.toString().split('.').last,
       'createdAt': createdAt.toIso8601String(),
