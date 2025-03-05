@@ -81,7 +81,7 @@ class _KahonTransferredItemsListState extends State<KahonTransferredItemsList> {
 
         return ListTile(
           title: Text(
-            '${item.qty} ${item.name} (${item.price.type})',
+            '${item.qty} ${item.price?.product.name ?? 'Unknown Product'} (${item.price?.type ?? 'Unknown'})',
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(

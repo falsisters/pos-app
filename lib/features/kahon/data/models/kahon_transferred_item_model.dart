@@ -1,10 +1,54 @@
 import 'package:falsisters_pos_app/features/sales/data/models/price_model.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_model.dart';
+import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
+
+class PriceWithProduct {
+  final String id;
+  final double price;
+  final int stock;
+  final ProductType type;
+  final Product product;
+  final String productId;
+
+  const PriceWithProduct({
+    required this.id,
+    required this.product,
+    required this.price,
+    required this.stock,
+    required this.type,
+    required this.productId,
+  });
+
+  factory PriceWithProduct.fromJson(Map<String, dynamic> json) {
+    return PriceWithProduct(
+      id: json['id'],
+      price: json['price'].toDouble(),
+      stock: json['stock'],
+      product: Product.fromJson(json['product']),
+      type: ProductType.values.firstWhere(
+        (e) => e.toString() == 'ProductType.${json['type']}',
+      ),
+      productId: json['productId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'price': price,
+      'stock': stock,
+      'type': type.toString().split('.').last,
+      'productId': productId,
+    };
+  }
+}
 
 class KahonTransferredItem {
   final String id;
   final int qty;
-  final String name;
-  final Price price;
+  final String? name; // Make nullable since it might be missing
+  final PriceWithProduct? price; // Make price nullable
+  final String? priceId; // Add priceId field
   final String kahonId;
   final double value;
   final DateTime createdAt;
@@ -14,8 +58,9 @@ class KahonTransferredItem {
   KahonTransferredItem({
     required this.id,
     required this.qty,
-    required this.price,
-    required this.name,
+    this.price,
+    this.name,
+    this.priceId,
     this.value = 0,
     required this.kahonId,
     required this.createdAt,
@@ -28,9 +73,13 @@ class KahonTransferredItem {
       id: json['id'],
       qty: json['qty'],
       name: json['name'],
-      price: Price.fromJson(json['price']),
+      // Handle both cases - full price object or just priceId
+      price: json['price'] != null
+          ? PriceWithProduct.fromJson(json['price'])
+          : null,
+      priceId: json['priceId'],
       kahonId: json['kahonId'],
-      value: json['value'] ?? 0,
+      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       kahonTransferredItemModifier:
@@ -42,18 +91,21 @@ class KahonTransferredItem {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'id': id,
       'qty': qty,
-      'price': price.toJson(),
-      'name': name,
       'kahonId': kahonId,
       'value': value,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
       'kahonTransferredItemModifier':
           kahonTransferredItemModifier.map((e) => e.toJson()).toList(),
     };
+
+    // Add conditional fields
+    if (name != null) data['name'] = name;
+    if (price != null) data['price'] = price!.toJson();
+    if (priceId != null) data['priceId'] = priceId;
+
+    return data;
   }
 }
 
@@ -82,7 +134,7 @@ class KahonTransferredItemModifier {
     return KahonTransferredItemModifier(
       id: json['id'],
       index: json['index'],
-      value: json['value'] ?? 0,
+      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),

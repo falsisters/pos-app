@@ -34,6 +34,7 @@ class _KahonItemsListState extends State<KahonItemsList> {
       final updatedItem = KahonItem(
         id: item.id,
         qty: item.qty,
+        name: item.name,
         kahonId: item.kahonId,
         value: item.value,
         createdAt: item.createdAt,

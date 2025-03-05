@@ -21,14 +21,10 @@ class UpdateKahonRequest {
     return {
       'id': id,
       'name': name,
-      'kahonItem':
-          kahonItem.isEmpty ? [] : kahonItem.map((e) => e.toJson()).toList(),
-      'kahonTransferredItem': kahonTransferredItem.isEmpty
-          ? []
-          : kahonTransferredItem.map((e) => e.toJson()).toList(),
-      'kahonTotalModifier': kahonTotalModifier.isEmpty
-          ? []
-          : kahonTotalModifier.map((e) => e.toJson()).toList(),
+      'kahonItem': kahonItem.map((e) => e.toJson()).toList(),
+      'kahonTransferredItem':
+          kahonTransferredItem.map((e) => e.toJson()).toList(),
+      'kahonTotalModifier': kahonTotalModifier.map((e) => e.toJson()).toList(),
     };
   }
 }

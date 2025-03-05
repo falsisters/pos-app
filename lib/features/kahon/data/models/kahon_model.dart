@@ -29,21 +29,34 @@ class Kahon {
         name: json['name'],
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
+        // Check both capitalized and non-capitalized field names
         kahonTransferredItem: (json['KahonTransferredItem'] is List)
             ? (json['KahonTransferredItem'] as List)
                 .map((e) => KahonTransferredItem.fromJson(e))
                 .toList()
-            : [],
+            : (json['kahonTransferredItem'] is List)
+                ? (json['kahonTransferredItem'] as List)
+                    .map((e) => KahonTransferredItem.fromJson(e))
+                    .toList()
+                : [],
         kahonItem: (json['KahonItem'] is List)
             ? (json['KahonItem'] as List)
                 .map((e) => KahonItem.fromJson(e))
                 .toList()
-            : [],
+            : (json['kahonItem'] is List)
+                ? (json['kahonItem'] as List)
+                    .map((e) => KahonItem.fromJson(e))
+                    .toList()
+                : [],
         kahonTotalModifier: (json['KahonTotalModifier'] is List)
             ? (json['KahonTotalModifier'] as List)
                 .map((e) => KahonTotalModifier.fromJson(e))
                 .toList()
-            : []);
+            : (json['kahonTotalModifier'] is List)
+                ? (json['kahonTotalModifier'] as List)
+                    .map((e) => KahonTotalModifier.fromJson(e))
+                    .toList()
+                : []);
   }
 
   Map<String, dynamic> toJson() {
@@ -110,7 +123,7 @@ class KahonTotalModifier {
     return KahonTotalModifier(
       id: json['id'],
       index: json['index'],
-      value: json['value'] ?? 0,
+      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),

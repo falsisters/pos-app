@@ -67,31 +67,34 @@ class _ModifierFormState extends State<ModifierForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 // Dynamically create the appropriate modifier based on the parent context
-                final modifier = context.findAncestorWidgetOfExactType<
-                            KahonTransferredItemsList>() !=
-                        null
-                    ? KahonTransferredItemModifier(
-                        id: DateTime.now().toIso8601String(),
-                        index: int.parse(_indexController.text),
-                        operation: _selectedOperation,
-                        value: double.parse(_valueController.text),
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                        kahonTransferredItemId:
-                            '', // You might want to pass this dynamically
-                      )
-                    : KahonItemModifier(
-                        id: DateTime.now().toIso8601String(),
-                        index: int.parse(_indexController.text),
-                        operation: _selectedOperation,
-                        value: double.parse(_valueController.text),
-                        createdAt: DateTime.now(),
-                        updatedAt: DateTime.now(),
-                        kahonItemId:
-                            '', // You might want to pass this dynamically
-                      );
+                if (context.findAncestorWidgetOfExactType<
+                        KahonTransferredItemsList>() !=
+                    null) {
+                  // Create a KahonTransferredItemModifier
+                  final modifier = KahonItemModifier(
+                    id: DateTime.now().toIso8601String(),
+                    index: int.parse(_indexController.text),
+                    operation: _selectedOperation,
+                    value: double.parse(_valueController.text),
+                    createdAt: DateTime.now(),
+                    updatedAt: DateTime.now(),
+                    kahonItemId: '', // You might want to pass this dynamically
+                  );
+                  widget.onSubmit(modifier);
+                } else {
+                  final modifier = KahonTransferredItemModifier(
+                    id: DateTime.now().toIso8601String(),
+                    index: int.parse(_indexController.text),
+                    operation: _selectedOperation,
+                    value: double.parse(_valueController.text),
+                    createdAt: DateTime.now(),
+                    updatedAt: DateTime.now(),
+                    kahonTransferredItemId: '',
+                  );
+                  // Create a KahonItemModifier
 
-                widget.onSubmit(modifier);
+                  widget.onSubmit(modifier);
+                }
               }
             },
             child: const Text('Add Modifier'),
