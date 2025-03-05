@@ -20,11 +20,13 @@ class ProductPrice {
 class TransferKahonRequest {
   final String id;
   final int qty;
+  final String name;
   final ProductPrice price;
 
   TransferKahonRequest({
     required this.id,
     required this.qty,
+    required this.name,
     required this.price,
   });
 
@@ -32,6 +34,7 @@ class TransferKahonRequest {
     return {
       'id': id,
       'qty': qty,
+      'name': name,
       'price': price.toJson(),
     };
   }

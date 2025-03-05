@@ -7,9 +7,9 @@ class Kahon {
   final String name;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<KahonTransferredItem> kahonTransferredItems;
-  final List<KahonItem> kahonItems;
-  final List<KahonTotalModifier> kahonTotalModifiers;
+  final List<KahonTransferredItem> kahonTransferredItem;
+  final List<KahonItem> kahonItem;
+  final List<KahonTotalModifier> kahonTotalModifier;
 
   Kahon({
     required this.id,
@@ -17,28 +17,33 @@ class Kahon {
     required this.name,
     required this.createdAt,
     required this.updatedAt,
-    this.kahonTransferredItems = const [],
-    this.kahonItems = const [],
-    this.kahonTotalModifiers = const [],
+    this.kahonTransferredItem = const [],
+    this.kahonItem = const [],
+    this.kahonTotalModifier = const [],
   });
 
   factory Kahon.fromJson(Map<String, dynamic> json) {
     return Kahon(
-      id: json['id'],
-      cashierId: json['cashierId'],
-      name: json['name'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      kahonTransferredItems: (json['kahonTransferredItems'] as List)
-          .map((e) => KahonTransferredItem.fromJson(e))
-          .toList(),
-      kahonItems: (json['kahonItems'] as List)
-          .map((e) => KahonItem.fromJson(e))
-          .toList(),
-      kahonTotalModifiers: (json['kahonTotalModifiers'] as List)
-          .map((e) => KahonTotalModifier.fromJson(e))
-          .toList(),
-    );
+        id: json['id'],
+        cashierId: json['cashierId'],
+        name: json['name'],
+        createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt']),
+        kahonTransferredItem: (json['KahonTransferredItem'] is List)
+            ? (json['KahonTransferredItem'] as List)
+                .map((e) => KahonTransferredItem.fromJson(e))
+                .toList()
+            : [],
+        kahonItem: (json['KahonItem'] is List)
+            ? (json['KahonItem'] as List)
+                .map((e) => KahonItem.fromJson(e))
+                .toList()
+            : [],
+        kahonTotalModifier: (json['KahonTotalModifier'] is List)
+            ? (json['KahonTotalModifier'] as List)
+                .map((e) => KahonTotalModifier.fromJson(e))
+                .toList()
+            : []);
   }
 
   Map<String, dynamic> toJson() {
@@ -48,12 +53,37 @@ class Kahon {
       'name': name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
-      'kahonTransferredItems':
-          kahonTransferredItems.map((e) => e.toJson()).toList(),
-      'kahonItems': kahonItems.map((e) => e.toJson()).toList(),
-      'kahonTotalModifiers':
-          kahonTotalModifiers.map((e) => e.toJson()).toList(),
+      'kahonTransferredItem': kahonTransferredItem.isEmpty
+          ? []
+          : kahonTransferredItem.map((e) => e.toJson()).toList(),
+      'kahonItem':
+          kahonItem.isEmpty ? [] : kahonItem.map((e) => e.toJson()).toList(),
+      'kahonTotalModifier': kahonTotalModifier.isEmpty
+          ? []
+          : kahonTotalModifier.map((e) => e.toJson()).toList(),
     };
+  }
+
+  Kahon copyWith({
+    String? id,
+    String? cashierId,
+    String? name,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<KahonTransferredItem>? kahonTransferredItem,
+    List<KahonItem>? kahonItem,
+    List<KahonTotalModifier>? kahonTotalModifier,
+  }) {
+    return Kahon(
+      id: id ?? this.id,
+      cashierId: cashierId ?? this.cashierId,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      kahonTransferredItem: kahonTransferredItem ?? this.kahonTransferredItem,
+      kahonItem: kahonItem ?? this.kahonItem,
+      kahonTotalModifier: kahonTotalModifier ?? this.kahonTotalModifier,
+    );
   }
 }
 
@@ -80,10 +110,9 @@ class KahonTotalModifier {
     return KahonTotalModifier(
       id: json['id'],
       index: json['index'],
-      value: json['value'],
-      operation: OperationType.values.firstWhere(
-        (e) => e.toString() == 'OperationType.${json['operation']}',
-      ),
+      value: json['value'] ?? 0,
+      operation: OperationType.values
+          .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       kahonId: json['kahonId'],

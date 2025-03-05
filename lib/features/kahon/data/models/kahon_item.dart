@@ -7,7 +7,7 @@ class KahonItem {
   final String kahonId;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<KahonItemModifier> kahonItemModifiers;
+  final List<KahonItemModifier> kahonItemModifier;
 
   KahonItem({
     required this.id,
@@ -16,7 +16,7 @@ class KahonItem {
     required this.kahonId,
     required this.createdAt,
     required this.updatedAt,
-    this.kahonItemModifiers = const [],
+    this.kahonItemModifier = const [],
   });
 
   factory KahonItem.fromJson(Map<String, dynamic> json) {
@@ -24,12 +24,13 @@ class KahonItem {
       id: json['id'],
       qty: json['qty'],
       kahonId: json['kahonId'],
-      value: json['value'],
+      value: json['value'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
-      kahonItemModifiers: (json['kahonItemModifiers'] as List)
-          .map((e) => KahonItemModifier.fromJson(e))
-          .toList(),
+      kahonItemModifier: (json['KahonItemModifier'] as List?)
+              ?.map((e) => KahonItemModifier.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 
@@ -41,7 +42,7 @@ class KahonItem {
       'value': value,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
-      'kahonItemModifiers': kahonItemModifiers.map((e) => e.toJson()).toList(),
+      'kahonItemModifier': kahonItemModifier.map((e) => e.toJson()).toList(),
     };
   }
 }
@@ -69,7 +70,7 @@ class KahonItemModifier {
     return KahonItemModifier(
       id: json['id'],
       index: json['index'],
-      value: json['value'],
+      value: json['value'] ?? 0,
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),

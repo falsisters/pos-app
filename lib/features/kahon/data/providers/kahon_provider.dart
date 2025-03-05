@@ -25,6 +25,7 @@ class KahonNotifier extends StateNotifier<AsyncValue<List<Kahon>>> {
     try {
       state = const AsyncValue.loading();
       final kahon = await _repository.getAllKahon();
+      print(kahon);
       state = AsyncValue.data(kahon);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

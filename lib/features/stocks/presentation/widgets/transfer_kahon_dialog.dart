@@ -99,6 +99,7 @@ class _TransferKahonDialogState extends ConsumerState<TransferKahonDialog> {
           type: _selectedPrice!.type,
         ),
         id: widget.product.id,
+        name: widget.product.name,
         qty: _transferQuantity,
       );
 

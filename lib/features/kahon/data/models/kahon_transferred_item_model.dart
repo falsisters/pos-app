@@ -3,37 +3,41 @@ import 'package:falsisters_pos_app/features/sales/data/models/price_model.dart';
 class KahonTransferredItem {
   final String id;
   final int qty;
+  final String name;
   final Price price;
   final String kahonId;
   final double value;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<KahonTransferredItemModifier> kahonTransferredItemModifiers;
+  final List<KahonTransferredItemModifier> kahonTransferredItemModifier;
 
   KahonTransferredItem({
     required this.id,
     required this.qty,
     required this.price,
+    required this.name,
     this.value = 0,
     required this.kahonId,
     required this.createdAt,
     required this.updatedAt,
-    this.kahonTransferredItemModifiers = const [],
+    this.kahonTransferredItemModifier = const [],
   });
 
   factory KahonTransferredItem.fromJson(Map<String, dynamic> json) {
     return KahonTransferredItem(
       id: json['id'],
       qty: json['qty'],
+      name: json['name'],
       price: Price.fromJson(json['price']),
       kahonId: json['kahonId'],
-      value: json['value'],
+      value: json['value'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
-      kahonTransferredItemModifiers:
-          (json['kahonTransferredItemModifiers'] as List)
-              .map((e) => KahonTransferredItemModifier.fromJson(e))
-              .toList(),
+      kahonTransferredItemModifier:
+          (json['KahonTransferredItemModifier'] as List?)
+                  ?.map((e) => KahonTransferredItemModifier.fromJson(e))
+                  .toList() ??
+              [],
     );
   }
 
@@ -42,12 +46,13 @@ class KahonTransferredItem {
       'id': id,
       'qty': qty,
       'price': price.toJson(),
+      'name': name,
       'kahonId': kahonId,
       'value': value,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
-      'kahonTransferredItemModifiers':
-          kahonTransferredItemModifiers.map((e) => e.toJson()).toList(),
+      'kahonTransferredItemModifier':
+          kahonTransferredItemModifier.map((e) => e.toJson()).toList(),
     };
   }
 }
@@ -77,7 +82,7 @@ class KahonTransferredItemModifier {
     return KahonTransferredItemModifier(
       id: json['id'],
       index: json['index'],
-      value: json['value'],
+      value: json['value'] ?? 0,
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),

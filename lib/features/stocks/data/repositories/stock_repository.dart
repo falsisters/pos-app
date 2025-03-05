@@ -29,8 +29,8 @@ class StockRepository {
   Future<Map<String, dynamic>> transferToKahon(
       String productId, TransferKahonRequest request) async {
     try {
-      final response = await _dio.post('/kahon/transfer/product/$productId',
-          data: request.toJson());
+      final response =
+          await _dio.post('/kahon/transfer/product', data: request.toJson());
 
       return response.data;
     } catch (e) {

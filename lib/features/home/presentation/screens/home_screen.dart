@@ -2,6 +2,7 @@
 import 'package:falsisters_pos_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:falsisters_pos_app/features/delivery/presentation/screens/delivery_screen.dart';
 import 'package:falsisters_pos_app/features/home/presentation/widgets/profile_section.dart';
+import 'package:falsisters_pos_app/features/kahon/presentation/screens/kahon_screen.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screen/sales_screen.dart';
 import 'package:falsisters_pos_app/features/stocks/presentation/screens/stock_screen.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +224,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       case 3:
         return const Center(child: Text('Profits Screen'));
       case 4:
-        return const Center(child: Text('Kahon Screen'));
+        return const KahonListScreen();
       case 5:
         return const Center(child: Text('Sales Check Screen'));
       case 6:

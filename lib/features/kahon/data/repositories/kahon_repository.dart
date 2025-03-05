@@ -10,7 +10,12 @@ class KahonRepository {
 
   Future<List<Kahon>> getAllKahon() async {
     try {
+      print(await _dio.get('/kahon/all'));
       final response = await _dio.get('/kahon/all');
+
+      if (response.data == null) {
+        return [];
+      }
 
       return (response.data as List)
           .map((json) => Kahon.fromJson(json))
