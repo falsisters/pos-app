@@ -13,7 +13,7 @@ class KahonItem {
   KahonItem({
     required this.id,
     required this.qty,
-    required this.name, // Add this parameter
+    required this.name,
     this.value = 0,
     required this.kahonId,
     required this.createdAt,
