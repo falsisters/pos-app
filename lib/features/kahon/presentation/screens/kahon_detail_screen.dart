@@ -224,7 +224,6 @@ class _KahonDetailScreenState extends ConsumerState<KahonDetailScreen> {
             ),
           ],
         ),
-        drawer: const Drawer(),
         body: Column(
           children: [
             Expanded(
@@ -343,8 +342,6 @@ class _KahonDetailScreenState extends ConsumerState<KahonDetailScreen> {
         return modifierValue != 0 ? value / modifierValue : value;
       case OperationType.TOTAL:
         return modifierValue; // Replace with the specified value
-      default:
-        return value;
     }
   }
 

@@ -2,7 +2,8 @@
 import 'package:falsisters_pos_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:falsisters_pos_app/features/delivery/presentation/screens/delivery_screen.dart';
 import 'package:falsisters_pos_app/features/home/presentation/widgets/profile_section.dart';
-import 'package:falsisters_pos_app/features/kahon/presentation/screens/kahon_screen.dart';
+import 'package:falsisters_pos_app/features/kahon/presentation/screens/kahon_detail_screen.dart';
+import 'package:falsisters_pos_app/features/kahon/presentation/screens/kahon_list_screen.dart';
 import 'package:falsisters_pos_app/features/sales/presentation/screen/sales_screen.dart';
 import 'package:falsisters_pos_app/features/stocks/presentation/screens/stock_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:falsisters_pos_app/features/shift/providers/shift_provider.dart'
 import 'package:falsisters_pos_app/features/home/presentation/widgets/clock_in_dialog.dart';
 
 final selectedNavigationIndexProvider = StateProvider<int>((ref) => 0);
+final selectedKahonIdProvider = StateProvider<String?>((ref) => null);
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -231,6 +233,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return const Center(child: Text('Sales History Screen'));
       case 7:
         return const ProfileSection();
+      case 8:
+        final kahonId = ref.watch(selectedKahonIdProvider);
+        return kahonId == null
+            ? const KahonListScreen()
+            : KahonDetailScreen(kahonId: kahonId);
       default:
         return const Center(child: Text('Select a menu item'));
     }

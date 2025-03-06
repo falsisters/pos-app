@@ -126,8 +126,6 @@ class KahonTransferredItemWidget extends StatelessWidget {
         return modifierValue != 0 ? value / modifierValue : value;
       case OperationType.TOTAL:
         return modifierValue; // Replace with the specified value
-      default:
-        return value;
     }
   }
 }

@@ -10,7 +10,6 @@ class KahonRepository {
 
   Future<List<Kahon>> getAllKahon() async {
     try {
-      print(await _dio.get('/kahon/all'));
       final response = await _dio.get('/kahon/all');
 
       if (response.data == null) {
@@ -53,6 +52,8 @@ class KahonRepository {
     try {
       final response =
           await _dio.put('/kahon/${request.id}', data: request.toJson());
+
+      print(request.toJson());
 
       return Kahon.fromJson(response.data);
     } catch (e) {

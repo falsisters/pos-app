@@ -47,8 +47,6 @@ class ModifierWidget extends StatelessWidget {
         return '÷';
       case OperationType.TOTAL:
         return '=';
-      default:
-        return '';
     }
   }
 
@@ -64,8 +62,6 @@ class ModifierWidget extends StatelessWidget {
         return Icons.star;
       case OperationType.TOTAL:
         return Icons.drag_handle;
-      default:
-        return Icons.question_mark;
     }
   }
 
@@ -81,8 +77,6 @@ class ModifierWidget extends StatelessWidget {
         return Colors.orange;
       case OperationType.TOTAL:
         return Colors.purple;
-      default:
-        return Colors.grey;
     }
   }
 }

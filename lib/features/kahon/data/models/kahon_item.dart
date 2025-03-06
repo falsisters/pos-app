@@ -14,7 +14,7 @@ class KahonItem {
     required this.id,
     required this.qty,
     required this.name,
-    this.value = 0,
+    required this.value,
     required this.kahonId,
     required this.createdAt,
     required this.updatedAt,
@@ -26,11 +26,11 @@ class KahonItem {
       id: json['id'],
       qty: json['qty'],
       name: json['name'], // Add this field
-      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
+      value: json['value'].toDouble(),
       kahonId: json['kahonId'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
-      kahonItemModifier: (json['kahonItemModifier'] as List?)
+      kahonItemModifier: (json['KahonItemModifier'] as List?)
               ?.map((e) => KahonItemModifier.fromJson(e))
               .toList() ??
           [],
@@ -43,7 +43,7 @@ class KahonItem {
       'qty': qty,
       'name': name, // Add name field
       'kahonId': kahonId,
-      'value': value,
+      'value': value.toDouble(),
       'kahonItemModifier': kahonItemModifier.map((e) => e.toJson()).toList(),
     };
   }
@@ -62,7 +62,7 @@ class KahonItemModifier {
     required this.id,
     required this.index,
     required this.operation,
-    this.value = 0,
+    required this.value,
     required this.createdAt,
     required this.updatedAt,
     required this.kahonItemId,
@@ -72,7 +72,7 @@ class KahonItemModifier {
     return KahonItemModifier(
       id: json['id'],
       index: json['index'],
-      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
+      value: (json['value'] as num).toDouble(),
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),
@@ -85,7 +85,7 @@ class KahonItemModifier {
     return {
       'id': id,
       'index': index,
-      'value': value,
+      'value': value.toDouble(),
       'operation': operation.toString().split('.').last,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),

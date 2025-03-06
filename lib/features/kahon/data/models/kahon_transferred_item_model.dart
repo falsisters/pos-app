@@ -1,4 +1,3 @@
-import 'package:falsisters_pos_app/features/sales/data/models/price_model.dart';
 import 'package:falsisters_pos_app/features/sales/data/models/product_model.dart';
 import 'package:falsisters_pos_app/features/sales/data/models/product_type_enum.dart';
 
@@ -61,7 +60,7 @@ class KahonTransferredItem {
     this.price,
     this.name,
     this.priceId,
-    this.value = 0,
+    required this.value,
     required this.kahonId,
     required this.createdAt,
     required this.updatedAt,
@@ -79,7 +78,7 @@ class KahonTransferredItem {
           : null,
       priceId: json['priceId'],
       kahonId: json['kahonId'],
-      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
+      value: json['value'].toDouble(),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       kahonTransferredItemModifier:
@@ -95,7 +94,7 @@ class KahonTransferredItem {
       'id': id,
       'qty': qty,
       'kahonId': kahonId,
-      'value': value,
+      'value': value.toDouble(),
       'kahonTransferredItemModifier':
           kahonTransferredItemModifier.map((e) => e.toJson()).toList(),
     };
@@ -124,7 +123,7 @@ class KahonTransferredItemModifier {
     required this.id,
     required this.index,
     required this.operation,
-    this.value = 0,
+    required this.value,
     required this.createdAt,
     required this.updatedAt,
     required this.kahonTransferredItemId,
@@ -134,7 +133,7 @@ class KahonTransferredItemModifier {
     return KahonTransferredItemModifier(
       id: json['id'],
       index: json['index'],
-      value: (json['value'] != null) ? (json['value'] as num).toDouble() : 0.0,
+      value: (json['value'] as num).toDouble(),
       operation: OperationType.values
           .firstWhere((e) => e.toString().split('.').last == json['operation']),
       createdAt: DateTime.parse(json['createdAt']),
@@ -147,7 +146,7 @@ class KahonTransferredItemModifier {
     return {
       'id': id,
       'index': index,
-      'value': value,
+      'value': value.toDouble(),
       'operation': operation.toString().split('.').last,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),

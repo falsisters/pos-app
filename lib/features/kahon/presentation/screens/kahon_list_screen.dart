@@ -1,7 +1,7 @@
+import 'package:falsisters_pos_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:falsisters_pos_app/features/kahon/data/providers/kahon_provider.dart';
-import 'package:falsisters_pos_app/features/kahon/presentation/screens/kahon_detail_screen.dart';
 
 class KahonListScreen extends ConsumerWidget {
   const KahonListScreen({Key? key}) : super(key: key);
@@ -31,9 +31,6 @@ class KahonListScreen extends ConsumerWidget {
           ),
         ],
       ),
-      drawer: const Drawer(
-          // Keep the drawer here as requested
-          ),
       body: kahonsAsyncValue.when(
         data: (kahons) {
           if (kahons.isEmpty) {
@@ -58,12 +55,11 @@ class KahonListScreen extends ConsumerWidget {
                       '$itemCount items • Created: ${_formatDate(kahon.createdAt)}'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            KahonDetailScreen(kahonId: kahon.id),
-                      ),
-                    );
+                    ref.read(selectedKahonIdProvider.notifier).state = kahon.id;
+
+                    // Update the navigation index to stay on Kahon tab
+                    ref.read(selectedNavigationIndexProvider.notifier).state =
+                        8;
                   },
                 ),
               );

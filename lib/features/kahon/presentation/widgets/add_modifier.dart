@@ -62,7 +62,8 @@ class _AddModifierDialogState extends State<AddModifierDialog> {
                 border: OutlineInputBorder(),
                 prefixText: '₱',
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
               ],
@@ -80,3 +81,37 @@ class _AddModifierDialogState extends State<AddModifierDialog> {
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              final value = double.parse(_valueController.text);
+              widget.onModifierAdded(_selectedOperation, value);
+              Navigator.of(context).pop();
+            }
+          },
+          child: const Text('Add'),
+        ),
+      ],
+    );
+  }
+
+  String _getOperationLabel(OperationType operation) {
+    switch (operation) {
+      case OperationType.ADDITION:
+        return 'Addition (+)';
+      case OperationType.SUBTRACTION:
+        return 'Subtraction (-)';
+      case OperationType.MULTIPLICATION:
+        return 'Multiplication (×)';
+      case OperationType.DIVISION:
+        return 'Division (÷)';
+      case OperationType.TOTAL:
+        return 'Replace Total (=)';
+    }
+  }
+}
